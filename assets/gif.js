@@ -5,22 +5,29 @@ window.onload = function() {
     // initial array of strings
     var topics = ["centaur", "unicorn", "dragon", "goblin", "elf", "ogre" ]
 
-    // create buttons for each string in the array
-    var i;
-    for (i = 0; i < topics.length; i++) {
-        var btn = document.createElement("BUTTON");
-        btn.innerHTML = topics[i];
-        btn.setAttribute("id", topics[i]);
-        document.getElementById("gif-buttons").appendChild(btn);
-    };
+    // add the topic buttons when the page first loads
+    addTopicButtons();
 
+    // create buttons for each string in the array
+    function addTopicButtons () {
+        var i;
+        for (i = 0; i < topics.length; i++) {
+            var btn = document.createElement("BUTTON");
+            btn.innerHTML = topics[i];
+            btn.setAttribute("id", topics[i]);
+            // styling the buttons
+            btn.setAttribute("type","button");
+            btn.setAttribute("class", "btn btn-outline-secondary m-2 gif-button");
+            document.getElementById("gif-buttons").appendChild(btn);
+        };
+    };
     // when the user clicks a button the page should grab 10 static non-animated gifs and place them on the page
     // Event listener for all button elements
-    document.querySelector(".container").addEventListener("click", function(event) {
+    document.querySelector(".gif-container").addEventListener("click", function(event) {
         if (event.target.tagName === "button".toUpperCase()) {
             console.log(event);
           
-            // In this case, the "this" keyword refers to the button that was clicked -- FIX!!!
+            // add the button topic to the API call by culling out the topic
             var magicCreature = event.target.getAttribute("id");
 
             // the url to query the database
@@ -64,7 +71,7 @@ window.onload = function() {
 
                 }
             })                     
-        } else if (event.target.className = "is-a-gif") {
+        } else if (event.target.className === "is-a-gif") {
             console.log("I just clicked a gif");
             // change the state from still to animate and vice versa 
             var state = event.target.getAttribute("gif-state");
@@ -75,7 +82,31 @@ window.onload = function() {
                 event.target.setAttribute("src", event.target.getAttribute("gif-still"));
                 event.target.setAttribute("gif-state", "still");
             }
-
-        }
+        } 
     })
-}
+    
+    // read input when someone clicks submit
+    document.getElementById("topic-submit").onclick = function() {
+        newTopic = document.querySelector("#user-topic").value;
+        console.log("the new topic is: " + newTopic);
+        // add it into the topics array
+        topics.splice(0,0, newTopic);
+        // remove all the existing button to prevent duplicates
+        function clearExistingButtons(){
+            var existingButtons = document.getElementById("gif-buttons");
+            while (existingButtons.hasChildNodes()) {
+                existingButtons.removeChild(existingButtons.firstChild);
+            }
+        }
+        clearExistingButtons ();
+        addTopicButtons (); 
+    }
+    // when someone hits enter after submitting a new topic, make it act as though they submitted through the submit button
+    var newTopicEnter = document.getElementById("user-topic");
+    newTopicEnter.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("topic-submit").click();
+        };
+    }); 
+};
