@@ -1,37 +1,15 @@
-## Welcome to GitHub Pages
+## GifTastic
 
-You can use the [editor on GitHub](https://github.com/hetty-chin/GifTastic/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+This is an app built to display various GIFs based on pre-defined buttons, with an additional option for folks to enter their own topics to pulls GIFs of. 
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+I tried my best to use as much vanilla javascript as possible for this. 
 
-### Markdown
+I used a for loop to create buttons for an array of topic that I predefined. In the loop, I also added Bootstrap styling classes to each button using .setAttribute. With the same setAttribute I added id's to each button to use it for calling the GIPHY API as well. I used appendChild to add the buttons to the HTML. 
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+I applied a click event listener to a larger area of code, rather than define an event for each button. I used fetch to call to the GIPHY API, then turned my response into a JSON to pull the GIFs I wanted. Continuing with setAttribute and appendChild, I was able to take my response and put it up on the HTML and animate on click. I had never used event.target before. I found it super handy to use when having a broader event listener. I had tried to use "this" but "this" ended up being other than what I thought it was so event.target saved the day.
 
-```markdown
-Syntax highlighted code block
+One part that I struggled with was the form for folks to create their own button. I used splice to add the new topic into the original array that I had used to creeate my initial buttons, but each time, I added a new button and ran the for loop again, it duplicated the buttons that I already had. I redid it and instead of splicing the form input in, I replicated the steps I needed to create new buttons and that worked. But, I had to start all over when I saw that the instructions said I was to add to the original array, so I threw in a clearExistingButtons function into the mix then reran the loop after something new was spliced in and that worked. 
 
-# Header 1
-## Header 2
-### Header 3
+Another SNAFU was, I always hit enter rather than submit, and I figured others do too. Hitting enter kept refreshing the page. I tried to console.log to figure out the problem but the console kept clearing and I couldn't figure out why for the longest time. I had never heard or thought of a submit button refreshing a page. I looked up how to get the event of lifting up from hitting the enter key (keycode 13) to do the same thing as submit, but it stil wouldn't work. After rummaging through more forums, I finally found a solution that works. I don't quite understand why but it works! It's on the HTML: "onkeypress="return event.keyCode !=13" I know that onkeypress means when someone pressing a key, to have something fire off, but it's the rest of it that I find confusing. What's a return? Does it mean to skip something? event.keyCode !=13. I would've thought that meant when the keycode that is pressed is not the enter key. If I put all those together I would think that snippet meant, "when someone hits a key, skip over the event if it's not the enter button", but that doesn't make sense, so shrug. 
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/hetty-chin/GifTastic/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+Other that those issues, the app works. There's something about GIFs, especially randomly pulled GIFs that I find disturbing so this wasn't the most fun, but it was cool to figure out solutions in such a different way. I really enjoyed how to change the state of the GIF from static to animated, and I liked being able to dynamically style buttons and to set event listener to a broader breadth. :)
